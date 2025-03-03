@@ -26,7 +26,7 @@ fun main() {
 /**
  * Main UI window (view)
  * Defines the UI and responds to events
- * The app model should be passwd as an argument
+ * The app model should be passed as an argument
  */
 class MainWindow : JFrame(), ActionListener {
 
@@ -62,13 +62,19 @@ class MainWindow : JFrame(), ActionListener {
      * Populate the UI with UI controls
      */
     private fun addControls() {
+        val defaultFont = Font(Font.SANS_SERIF, Font.PLAIN, 36)
+
         greetingLabel = JLabel("Hello, World!")
         greetingLabel.horizontalAlignment = SwingConstants.CENTER
         greetingLabel.bounds = Rectangle(50, 50, 500, 100)
+        greetingLabel.font = defaultFont
         add(greetingLabel)
 
         helloButton = JButton("Click Me!")
         helloButton.bounds = Rectangle(50,200,500,100)
+        helloButton.foreground = Color.BLUE
+        helloButton.background = Color(0, 33, 66)
+        helloButton.font = defaultFont
         helloButton.addActionListener(this)     // Handle any clicks
         add(helloButton)
     }
