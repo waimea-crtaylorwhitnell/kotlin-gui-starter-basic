@@ -28,11 +28,13 @@ fun main() {
  * Defines the UI and responds to events
  * The app model should be passed as an argument
  */
-class MainWindow : JFrame(), ActionListener {
+class MainWindow : JFrame(), ActionListener, KeyListener {
 
     // Fields to hold the UI elements
     private lateinit var greetingLabel: JLabel
+    private lateinit var textBox: JTextField
     private lateinit var helloButton: JButton
+    private lateinit var goodbyeButton: JButton
 
     /**
      * Configure the UI and display it
@@ -64,19 +66,34 @@ class MainWindow : JFrame(), ActionListener {
     private fun addControls() {
         val defaultFont = Font(Font.SANS_SERIF, Font.PLAIN, 36)
 
-        greetingLabel = JLabel("Hello, World!")
+        greetingLabel = JLabel("Click a button...")
         greetingLabel.horizontalAlignment = SwingConstants.CENTER
-        greetingLabel.bounds = Rectangle(50, 50, 500, 100)
+        greetingLabel.bounds = Rectangle(50, 20, 500, 100)
         greetingLabel.font = defaultFont
         add(greetingLabel)
 
-        helloButton = JButton("Click Me!")
-        helloButton.bounds = Rectangle(50,200,500,100)
+        textBox = JTextField()
+        textBox.horizontalAlignment = SwingConstants.CENTER
+        textBox.bounds = Rectangle(33, 100, 533, 80)
+        textBox.addActionListener(this)
+        textBox.addKeyListener(this)
+        add(textBox)
+
+        helloButton = JButton("Hello!")
+        helloButton.bounds = Rectangle(33,200,200,100)
         helloButton.foreground = Color.BLUE
         helloButton.background = Color(0, 33, 66)
         helloButton.font = defaultFont
         helloButton.addActionListener(this)     // Handle any clicks
         add(helloButton)
+
+        goodbyeButton = JButton("Goodbye!")
+        goodbyeButton.bounds = Rectangle(366,200,200,100)
+        goodbyeButton.foreground = Color.BLUE
+        goodbyeButton.background = Color(0, 33, 66)
+        goodbyeButton.font = defaultFont
+        goodbyeButton.addActionListener(this)     // Handle any clicks
+        add(goodbyeButton)
     }
 
 
@@ -85,9 +102,46 @@ class MainWindow : JFrame(), ActionListener {
      */
     override fun actionPerformed(e: ActionEvent?) {
         when (e?.source) {
-            helloButton -> {
-                greetingLabel.text = "You clicked the button!"
+            textBox -> {
+                println("Name has been changed!")
             }
+            helloButton -> {
+                println("Hello button pressed!")
+                if (textBox.text.isNotEmpty()) {
+                    greetingLabel.text = "Hello there ${textBox.text}!"
+                }
+                else {
+                    greetingLabel.text = "Hello there intruder!"
+                }
+            }
+            goodbyeButton -> {
+                println("Goodbye button pressed!")
+                if (textBox.text.isNotEmpty()) {
+                    greetingLabel.text = "Oh... ${textBox.text}"
+                }
+                else {
+                    greetingLabel.text = "Oh... intruder"
+                }
+            }
+        }
+    }
+
+    override fun keyTyped(e: KeyEvent?) {
+        println("Key TYPED: ${e?.keyChar}")
+    }
+
+    override fun keyPressed(e: KeyEvent?) {
+        println("Key PRESSED: ${e?.keyCode}")
+    }
+
+    override fun keyReleased(e: KeyEvent?) {
+        println("Key RELEASED: ${e?.keyCode}")
+
+        if (e?.keyCode in KeyEvent.VK_A..KeyEvent.VK_Z) {
+            println("Letter key!")
+        }
+        else {
+            e?.consume()
         }
     }
 
